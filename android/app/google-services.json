@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "338872290887",
+    "project_id": "chat-app-devbruno",
+    "storage_bucket": "chat-app-devbruno.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338872290887:android:d356bcb7d7b45e86816b62",
+        "android_client_info": {
+          "package_name": "chat.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbwBFaFQOGouc0_TBL44EDtrtQV7PE4RY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
