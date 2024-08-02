@@ -44,7 +44,7 @@ class MyDrawer extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
                   child: ListTile(
-                    title: const Text('S E T T I N G S'),
+                    title: const Text('C O N F I G U R A Ç Õ E S'),
                     leading: const Icon(
                       Icons.settings,
                     ),

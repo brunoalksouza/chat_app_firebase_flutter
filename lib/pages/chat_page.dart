@@ -1,3 +1,4 @@
+import 'package:chat_app_firebase_flutter/components/chat_bubble.dart';
 import 'package:chat_app_firebase_flutter/services/auth/auth_service.dart';
 import 'package:chat_app_firebase_flutter/services/chat/chat_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,12 +29,11 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Colors.transparent,
         title: Text(
           receiverEmail,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.tertiary),
+          style:
+              const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
       body: Column(
@@ -70,31 +70,54 @@ class ChatPage extends StatelessWidget {
 
   Widget _buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    return Text(data['message']);
+
+    bool isCurrentUser = data['senderID'] == _authService.getCurrentUser()!.uid;
+
+    var alignment =
+        isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
+
+    return Container(
+      alignment: alignment,
+      child: Column(
+        crossAxisAlignment:
+            isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          ChatBubble(message: data["message"], isCurrentUser: isCurrentUser)
+        ],
+      ),
+    );
   }
 
   Widget _buildUserInput() {
-    return Row(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _messageController,
-              decoration: InputDecoration(
-                hintText: 'Type a message',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _messageController,
+                decoration: InputDecoration(
+                  hintText: 'Escreva uma mensagem',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        IconButton(
-          icon: Icon(Icons.send),
-          onPressed: sendMessage,
-        ),
-      ],
+          Container(
+            decoration: const BoxDecoration(
+                color: Colors.green, shape: BoxShape.circle),
+            child: IconButton(
+              icon: Icon(Icons.send),
+              onPressed: sendMessage,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
