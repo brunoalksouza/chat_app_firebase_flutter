@@ -4,19 +4,38 @@ import 'package:chat_app_firebase_flutter/components/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  final void Function()? onTap;
+
+  const RegisterPage({super.key, required this.onTap});
+
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPwController = TextEditingController();
 
-  final void Function()? onTap;
-
-  RegisterPage({super.key, required this.onTap});
+  String emailError = '';
+  String passwordError = '';
+  String confirmPwError = '';
 
   void register(BuildContext context) {
     final _auth = AuthService();
 
-    if (passwordController.text == confirmPwController.text) {
+    setState(() {
+      emailError = validarEmail(emailController.text) ? '' : 'Email inválido';
+      passwordError = validarSenha(passwordController.text)
+          ? ''
+          : 'A senha deve ter 6 caracteres';
+      confirmPwError = passwordController.text == confirmPwController.text
+          ? ''
+          : 'Senhas não conferem';
+    });
+
+    if (emailError.isEmpty && passwordError.isEmpty && confirmPwError.isEmpty) {
       try {
         _auth.signUpWithEmailPassword(
             emailController.text, passwordController.text);
@@ -28,14 +47,17 @@ class RegisterPage extends StatelessWidget {
           ),
         );
       }
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-          title: Text('Senhas não conferem'),
-        ),
-      );
     }
+  }
+
+  bool validarEmail(String email) {
+    final emailRegExp =
+        RegExp(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$');
+    return emailRegExp.hasMatch(email) && email.endsWith('.com');
+  }
+
+  bool validarSenha(String senha) {
+    return senha.length == 6;
   }
 
   @override
@@ -57,31 +79,34 @@ class RegisterPage extends StatelessWidget {
               hintText: 'Email',
               obscure: false,
               controller: emailController,
+              errorText: emailError,
             ),
             const SizedBox(height: 20),
             MyTextField(
               hintText: 'Password',
               obscure: true,
               controller: passwordController,
+              errorText: passwordError,
             ),
             const SizedBox(height: 15),
             MyTextField(
               hintText: 'Confirm Password',
               obscure: true,
               controller: confirmPwController,
+              errorText: confirmPwError,
             ),
             const SizedBox(height: 20),
             MyButton(
-              text: 'Register',
+              text: 'Registrar',
               onTap: () => register(context),
             ),
             const SizedBox(height: 25),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               const Text('Já tem um login?'),
               GestureDetector(
-                onTap: onTap,
+                onTap: widget.onTap,
                 child: const Text(
-                  ' Se registre!',
+                  ' Faça Login!',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),

@@ -3,30 +3,55 @@ import 'package:chat_app_firebase_flutter/components/my_button.dart';
 import 'package:chat_app_firebase_flutter/components/my_text_field.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  final void Function()? onTap;
+
+  const LoginPage({super.key, required this.onTap});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  final void Function()? onTap;
-
-  LoginPage({super.key, required this.onTap});
+  String emailError = '';
+  String passwordError = '';
 
   void login(BuildContext context) async {
-    final authService = AuthService();
+    final _auth = AuthService();
 
-    try {
-      await authService.signInWithEmailAndPassword(
-          emailController.text, passwordController.text);
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-          title: Center(
-            child: Text('Informações inválidas'),
+    setState(() {
+      emailError = validarEmail(emailController.text) ? '' : 'Email inválido';
+      passwordError =
+          validarSenha(passwordController.text) ? '' : 'Senha inválida';
+    });
+
+    if (emailError.isEmpty && passwordError.isEmpty) {
+      try {
+        await _auth.signInWithEmailAndPassword(
+            emailController.text, passwordController.text);
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Informações inválidas'),
+            content: Text(e.toString()),
           ),
-        ),
-      );
+        );
+      }
     }
+  }
+
+  bool validarEmail(String email) {
+    final emailRegExp =
+        RegExp(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$');
+    return emailRegExp.hasMatch(email) && email.endsWith('.com');
+  }
+
+  bool validarSenha(String senha) {
+    return senha.length >= 6;
   }
 
   @override
@@ -42,18 +67,20 @@ class LoginPage extends StatelessWidget {
               size: 60,
               color: Theme.of(context).colorScheme.primary,
             ),
-            const Text('Seja bem vindo de volta'),
+            const Text('Seja bem-vindo de volta'),
             const SizedBox(height: 20),
             MyTextField(
               hintText: 'Email',
               obscure: false,
               controller: emailController,
+              errorText: emailError,
             ),
             const SizedBox(height: 20),
             MyTextField(
               hintText: 'Password',
               obscure: true,
               controller: passwordController,
+              errorText: passwordError,
             ),
             const SizedBox(height: 20),
             MyButton(
@@ -64,7 +91,7 @@ class LoginPage extends StatelessWidget {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               const Text('Não tem login?'),
               GestureDetector(
-                onTap: onTap,
+                onTap: widget.onTap,
                 child: const Text(
                   ' Se registre!',
                   style: TextStyle(fontWeight: FontWeight.bold),
