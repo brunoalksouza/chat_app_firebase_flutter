@@ -4,14 +4,16 @@ class MyTextField extends StatelessWidget {
   final String hintText;
   final bool obscure;
   final TextEditingController controller;
-  final String errorText;
+  final String? errorText;
+  final FocusNode? focusNode;
 
   MyTextField({
     super.key,
     required this.hintText,
     required this.obscure,
     required this.controller,
-    required this.errorText,
+    this.errorText,
+    this.focusNode,
   });
 
   @override
@@ -25,6 +27,7 @@ class MyTextField extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             obscureText: obscure,
             controller: controller,
+            focusNode: focusNode,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
@@ -41,7 +44,6 @@ class MyTextField extends StatelessWidget {
               hintText: hintText,
               hintStyle:
                   TextStyle(color: Theme.of(context).colorScheme.primary),
-              errorText: errorText.isEmpty ? null : errorText,
               errorStyle: const TextStyle(color: Colors.red, fontSize: 12),
             ),
           ),

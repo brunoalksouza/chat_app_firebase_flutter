@@ -1,5 +1,7 @@
 import 'package:chat_app_firebase_flutter/models/message.dart';
+import 'package:chat_app_firebase_flutter/themes/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatBubble extends StatelessWidget {
   final String message;
@@ -9,11 +11,14 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode =
+        Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
+
     return Container(
       decoration: BoxDecoration(
         color: isCurrentUser
-            ? Theme.of(context).colorScheme.secondary
-            : Theme.of(context).colorScheme.primary,
+            ? Colors.green
+            : (isDarkMode ? Colors.grey[800] : Colors.grey[300]),
         borderRadius: BorderRadius.circular(12),
       ),
       padding: const EdgeInsets.all(15),
