@@ -1,4 +1,3 @@
-import 'package:chat_app_firebase_flutter/models/message.dart';
 import 'package:chat_app_firebase_flutter/themes/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
