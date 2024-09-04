@@ -64,13 +64,19 @@ flutter run
 ```
 
 Login screen:
-![Screenshot_6](https://github.com/user-attachments/assets/a506efae-a99c-4d25-824e-bca1c1d99ea4)
+<br>
+<img src="https://github.com/user-attachments/assets/a506efae-a99c-4d25-824e-bca1c1d99ea4" width="350">
+<br>
+Home screen:
+<br>
+<img src="https://github.com/user-attachments/assets/b3303d62-b13d-4928-acb0-a4d2dc84b395" width="350">
+<br>
+Drawer screen:
+<br>
+<img src="https://github.com/user-attachments/assets/4eefa350-6903-4db1-beb5-218acb5da17f" width="350">
 
-General screen with reserved meetings
-Each meeting is represented by a little ball:
-![Screenshot_8](https://github.com/user-attachments/assets/b3303d62-b13d-4928-acb0-a4d2dc84b395)
-
-After clicking the button to schedule the day, you receive this modal to schedule the time and add more information about:
-![Screenshot_9](https://github.com/user-attachments/assets/dddbea71-1495-4f69-85d2-b6d6179a67a9)
+Chat screen:
+<br>
+<img src="https://github.com/user-attachments/assets/dddbea71-1495-4f69-85d2-b6d6179a67a9" width="350">
 
 
